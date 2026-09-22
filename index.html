@@ -9,961 +9,186 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     :root {
-      --preto: #080808;
-      --dourado: #D4AF37;
-      --dourado-claro: #E8C84A;
-      --branco: #FFFFFF;
-      --cinza-escuro: #171717;
-      --cinza-medio: #2A2A2A;
-      --cinza-claro: #3A3A3A;
-      --sucesso: #2E7D32;
-      --aviso: #F9A825;
-      --perigo: #C62828;
-      --borda-dourada: rgba(212, 175, 55, 0.25);
+      --preto: #080808; --dourado: #D4AF37; --dourado-claro: #E8C84A;
+      --branco: #FFFFFF; --cinza-escuro: #171717; --cinza-medio: #2A2A2A;
+      --cinza-claro: #3A3A3A; --borda-dourada: rgba(212, 175, 55, 0.25);
       --brilho-dourado: 0 0 12px rgba(212, 175, 55, 0.15);
       --sombra-card: 0 12px 30px rgba(0, 0, 0, 0.7);
-      --raio: 14px;
-      --raio-pequeno: 10px;
+      --raio: 14px; --raio-pequeno: 10px;
       --transicao: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
     }
+    body { background: var(--preto); color: var(--branco); display: flex; min-height: 100vh; overflow-x: hidden; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--cinza-escuro); }
+    ::-webkit-scrollbar-thumb { background: var(--dourado); border-radius: 8px; }
+
+    /* SIDEBAR */
+    .sidebar { width: 260px; background: var(--cinza-escuro); border-right: 1px solid var(--borda-dourada); display: flex; flex-direction: column; padding: 20px 0; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: var(--transicao); box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6); }
+    .logo-area { display: flex; align-items: center; gap: 12px; padding: 0 20px 28px 20px; border-bottom: 1px solid var(--borda-dourada); margin-bottom: 20px; }
+    .shield { width: 52px; height: 52px; background: linear-gradient(145deg, var(--dourado), #A8841E); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; color: var(--preto); box-shadow: var(--brilho-dourado), 0 4px 12px rgba(0,0,0,0.6); border: 1px solid rgba(255, 255, 255, 0.2); flex-shrink: 0; text-shadow: 0 2px 2px rgba(0,0,0,0.3); }
+    .logo-text h1 { font-size: 26px; font-weight: 800; letter-spacing: 2px; color: var(--dourado); line-height: 1.1; text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3); }
+    .logo-text span { font-size: 10px; letter-spacing: 3px; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; font-weight: 500; }
+    .nav-menu { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 10px; }
+    .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: var(--raio-pequeno); color: rgba(255, 255, 255, 0.7); font-weight: 500; font-size: 14px; transition: var(--transicao); cursor: pointer; border-left: 3px solid transparent; }
+    .nav-item i { width: 20px; text-align: center; font-size: 16px; color: rgba(212, 175, 55, 0.7); transition: var(--transicao); }
+    .nav-item:hover { background: rgba(212, 175, 55, 0.08); color: var(--branco); }
+    .nav-item.active { background: rgba(212, 175, 55, 0.12); color: var(--dourado); border-left-color: var(--dourado); font-weight: 600; }
+    .nav-item.active i { color: var(--dourado); }
+    .nav-divider { height: 1px; background: var(--borda-dourada); margin: 12px 16px; }
+    .user-tag { padding: 16px 20px 0 20px; border-top: 1px solid var(--borda-dourada); margin-top: auto; display: flex; align-items: center; gap: 12px; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dourado); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--preto); font-size: 16px; border: 2px solid rgba(255,255,255,0.2); }
+    .user-info h4 { font-size: 14px; font-weight: 600; }
+    .user-info p { font-size: 11px; color: rgba(255, 255, 255, 0.5); }
+
+    /* MAIN */
+    .main { flex: 1; margin-left: 260px; padding: 24px 32px 40px 32px; transition: var(--transicao); }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+    .page-title h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .page-title h2 span { color: var(--dourado); }
+    .page-title p { font-size: 14px; color: rgba(255, 255, 255, 0.5); margin-top: 2px; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .notification-badge { position: relative; background: var(--cinza-medio); padding: 10px 14px; border-radius: 30px; border: 1px solid var(--borda-dourada); cursor: pointer; transition: var(--transicao); font-size: 16px; }
+    .notification-badge:hover { background: var(--cinza-claro); border-color: var(--dourado); }
+    .notification-badge .dot { position: absolute; top: 6px; right: 8px; width: 8px; height: 8px; background: var(--dourado); border-radius: 50%; box-shadow: 0 0 8px var(--dourado); }
+
+    .btn { padding: 10px 22px; border-radius: 30px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: var(--transicao); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+    .btn-gold { background: var(--dourado); color: var(--preto); box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25); }
+    .btn-gold:hover { background: var(--dourado-claro); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
+    .btn-outline { background: transparent; border: 1px solid var(--borda-dourada); color: var(--branco); }
+    .btn-outline:hover { border-color: var(--dourado); background: rgba(212, 175, 55, 0.05); }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px; }
+    .card { background: var(--cinza-escuro); border-radius: var(--raio); padding: 20px 22px; border: 1px solid var(--borda-dourada); box-shadow: var(--sombra-card); transition: var(--transicao); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--dourado), transparent); opacity: 0.4; }
+    .card:hover { transform: translateY(-3px); border-color: rgba(212, 175, 55, 0.5); box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8), var(--brilho-dourado); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .card-header i { font-size: 22px; color: var(--dourado); opacity: 0.9; }
+    .card-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.5); font-weight: 600; }
+    .card-value { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+    .card-sub { font-size: 13px; color: rgba(255, 255, 255, 0.6); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+    .gold-text { color: var(--dourado); font-weight: 700; }
+
+    .section-title { display: flex; justify-content: space-between; align-items: center; margin: 36px 0 18px 0; }
+    .section-title h3 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .section-title h3 i { color: var(--dourado); font-size: 20px; }
+    .section-title a { color: var(--dourado); font-size: 13px; text-decoration: none; font-weight: 500; opacity: 0.8; transition: var(--transicao); }
+    .section-title a:hover { opacity: 1; text-decoration: underline; }
+
+    .activity-list { display: flex; flex-direction: column; gap: 8px; }
+    .activity-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--cinza-escuro); border-radius: var(--raio-pequeno); border: 1px solid rgba(212, 175, 55, 0.1); transition: var(--transicao); }
+    .activity-item:hover { background: var(--cinza-medio); border-color: rgba(212, 175, 55, 0.25); }
+    .activity-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); display: flex; align-items: center; justify-content: center; color: var(--dourado); font-size: 16px; flex-shrink: 0; }
+    .activity-text { flex: 1; font-size: 14px; }
+    .activity-text strong { font-weight: 600; color: var(--dourado); }
+    .activity-time { font-size: 12px; color: rgba(255, 255, 255, 0.4); white-space: nowrap; }
+
+    .table-wrapper { background: var(--cinza-escuro); border-radius: var(--raio); border: 1px solid var(--borda-dourada); overflow-x: auto; padding: 4px; box-shadow: var(--sombra-card); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 600px; }
+    th { text-align: left; padding: 16px 18px; color: rgba(255, 255, 255, 0.6); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--borda-dourada); }
+    td { padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(212, 175, 55, 0.04); }
+
+    .badge { padding: 4px 12px; border-radius: 30px; font-size: 11px; font-weight: 600; display: inline-block; letter-spacing: 0.3px; }
+    .badge-gold { background: rgba(212, 175, 55, 0.15); color: var(--dourado); border: 1px solid rgba(212, 175, 55, 0.3); }
+    .badge-green { background: rgba(46, 125, 50, 0.2); color: #6FCF97; border: 1px solid rgba(46, 125, 50, 0.3); }
+    .badge-red { background: rgba(198, 40, 40, 0.2); color: #EB5757; border: 1px solid rgba(198, 40, 40, 0.3); }
+    .badge-yellow { background: rgba(249, 168, 37, 0.2); color: #F2C94C; border: 1px solid rgba(249, 168, 37, 0.3); }
+
+    .field-preview { background: #0A1A0A; border-radius: var(--raio); border: 1px solid var(--borda-dourada); padding: 30px 20px; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: var(--sombra-card); }
+    .field-preview .pitch-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; background-image: linear-gradient(to right, transparent 49.5%, rgba(255,255,255,0.1) 49.5%, rgba(255,255,255,0.1) 50.5%, transparent 50.5%), radial-gradient(circle at 50% 50%, transparent 14%, rgba(255,255,255,0.1) 14%, rgba(255,255,255,0.1) 15%, transparent 15%); }
+    .formation-dots { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 2; }
+    .player-dot { width: 44px; height: 44px; border-radius: 50%; background: var(--cinza-medio); border: 2px solid var(--dourado); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: var(--dourado); box-shadow: 0 0 12px rgba(212, 175, 55, 0.2); transition: var(--transicao); }
+    .player-dot:hover { transform: scale(1.1); background: var(--dourado); color: var(--preto); }
+
+    .form-card { background: var(--cinza-escuro); border-radius: var(--raio); border: 1px solid var(--borda-dourada); padding: 28px 30px; box-shadow: var(--sombra-card); max-width: 800px; margin: 0 auto; animation: fadeUp 0.4s ease forwards; }
+    .form-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+    .form-card h3 i { color: var(--dourado); }
+    .form-card .subtitle { color: rgba(255, 255, 255, 0.5); font-size: 14px; margin-bottom: 28px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group label { font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.7); letter-spacing: 0.3px; }
+    .form-group label .required { color: var(--dourado); margin-left: 2px; }
+    .form-group input, .form-group select, .form-group textarea { background: var(--cinza-medio); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--raio-pequeno); padding: 12px 16px; color: var(--branco); font-size: 14px; font-family: 'Inter', sans-serif; transition: var(--transicao); outline: none; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--dourado); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12); background: var(--cinza-claro); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255, 255, 255, 0.3); }
+    .form-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4AF37' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; }
+    .form-group select option { background: var(--cinza-escuro); color: var(--branco); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-actions { display: flex; gap: 14px; margin-top: 28px; justify-content: flex-end; flex-wrap: wrap; }
 
-    body {
-      background: var(--preto);
-      color: var(--branco);
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+    .success-message { display: none; align-items: center; gap: 12px; padding: 16px 20px; background: rgba(46, 125, 50, 0.15); border: 1px solid rgba(46, 125, 50, 0.4); border-radius: var(--raio-pequeno); color: #6FCF97; font-weight: 500; font-size: 14px; margin-top: 20px; animation: fadeUp 0.3s ease; }
+    .success-message.show { display: flex; }
 
-    /* ===== BARRA DE ROLAGEM ===== */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--cinza-escuro);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--dourado);
-      border-radius: 8px;
-    }
+    .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.4); }
+    .empty-state i { font-size: 48px; color: var(--dourado); opacity: 0.3; margin-bottom: 16px; display: block; }
+    .empty-state p { font-size: 15px; }
 
-    /* ===== MENU LATERAL ===== */
-    .sidebar {
-      width: 260px;
-      background: var(--cinza-escuro);
-      border-right: 1px solid var(--borda-dourada);
-      display: flex;
-      flex-direction: column;
-      padding: 20px 0;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      z-index: 100;
-      transition: var(--transicao);
-      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 20px 28px 20px;
-      border-bottom: 1px solid var(--borda-dourada);
-      margin-bottom: 20px;
-    }
-
-    .shield {
-      width: 52px;
-      height: 52px;
-      background: linear-gradient(145deg, var(--dourado), #A8841E);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: 900;
-      color: var(--preto);
-      box-shadow: var(--brilho-dourado), 0 4px 12px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      flex-shrink: 0;
-      text-shadow: 0 2px 2px rgba(0,0,0,0.3);
-    }
-
-    .logo-text h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--dourado);
-      line-height: 1.1;
-      text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
-    }
-
-    .logo-text span {
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .nav-menu {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 0 10px;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      border-radius: var(--raio-pequeno);
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 500;
-      font-size: 14px;
-      transition: var(--transicao);
-      cursor: pointer;
-      border-left: 3px solid transparent;
-      position: relative;
-    }
-
-    .nav-item i {
-      width: 20px;
-      text-align: center;
-      font-size: 16px;
-      color: rgba(212, 175, 55, 0.7);
-      transition: var(--transicao);
-    }
-
-    .nav-item:hover {
-      background: rgba(212, 175, 55, 0.08);
-      color: var(--branco);
-    }
-
-    .nav-item:hover i {
-      color: var(--dourado);
-    }
-
-    .nav-item.active {
-      background: rgba(212, 175, 55, 0.12);
-      color: var(--dourado);
-      border-left-color: var(--dourado);
-      font-weight: 600;
-      box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05);
-    }
-
-    .nav-item.active i {
-      color: var(--dourado);
-    }
-
-    .nav-divider {
-      height: 1px;
-      background: var(--borda-dourada);
-      margin: 12px 16px;
-    }
-
-    .user-tag {
-      padding: 16px 20px 0 20px;
-      border-top: 1px solid var(--borda-dourada);
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--dourado);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: var(--preto);
-      font-size: 16px;
-      border: 2px solid rgba(255,255,255,0.2);
-    }
-
-    .user-info h4 {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .user-info p {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    /* ===== CONTEÚDO PRINCIPAL ===== */
-    .main {
-      flex: 1;
-      margin-left: 260px;
-      padding: 24px 32px 40px 32px;
-      transition: var(--transicao);
-    }
-
-    /* ===== CABEÇALHO ===== */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .page-title h2 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .page-title h2 span {
-      color: var(--dourado);
-    }
-
-    .page-title p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.5);
-      margin-top: 2px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .notification-badge {
-      position: relative;
-      background: var(--cinza-medio);
-      padding: 10px 14px;
-      border-radius: 30px;
-      border: 1px solid var(--borda-dourada);
-      cursor: pointer;
-      transition: var(--transicao);
-      font-size: 16px;
-    }
-
-    .notification-badge:hover {
-      background: var(--cinza-claro);
-      border-color: var(--dourado);
-    }
-
-    .notification-badge .dot {
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      background: var(--dourado);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--dourado);
-    }
-
-    .btn {
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-      transition: var(--transicao);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-
-    .btn-gold {
-      background: var(--dourado);
-      color: var(--preto);
-      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
-    }
-
-    .btn-gold:hover {
-      background: var(--dourado-claro);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--borda-dourada);
-      color: var(--branco);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--dourado);
-      background: rgba(212, 175, 55, 0.05);
-    }
-
-    .btn-sm {
-      padding: 6px 14px;
-      font-size: 12px;
-    }
-
-    /* ===== CARDS ===== */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      margin-bottom: 32px;
-    }
-
-    .card {
-      background: var(--cinza-escuro);
-      border-radius: var(--raio);
-      padding: 20px 22px;
-      border: 1px solid var(--borda-dourada);
-      box-shadow: var(--sombra-card);
-      transition: var(--transicao);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--dourado), transparent);
-      opacity: 0.4;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(212, 175, 55, 0.5);
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8), var(--brilho-dourado);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .card-header i {
-      font-size: 22px;
-      color: var(--dourado);
-      opacity: 0.9;
-    }
-
-    .card-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 600;
-    }
-
-    .card-value {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      line-height: 1.2;
-    }
-
-    .card-sub {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .gold-text {
-      color: var(--dourado);
-      font-weight: 700;
-    }
-
-    /* ===== TÍTULO DE SEÇÃO ===== */
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 36px 0 18px 0;
-    }
-
-    .section-title h3 {
-      font-size: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-title h3 i {
-      color: var(--dourado);
-      font-size: 20px;
-    }
-
-    .section-title a {
-      color: var(--dourado);
-      font-size: 13px;
-      text-decoration: none;
-      font-weight: 500;
-      opacity: 0.8;
-      transition: var(--transicao);
-    }
-
-    .section-title a:hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-
-    /* ===== ATIVIDADES ===== */
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .activity-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      background: var(--cinza-escuro);
-      border-radius: var(--raio-pequeno);
-      border: 1px solid rgba(212, 175, 55, 0.1);
-      transition: var(--transicao);
-    }
-
-    .activity-item:hover {
-      background: var(--cinza-medio);
-      border-color: rgba(212, 175, 55, 0.25);
-    }
-
-    .activity-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--dourado);
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .activity-text {
-      flex: 1;
-      font-size: 14px;
-    }
-
-    .activity-text strong {
-      font-weight: 600;
-      color: var(--dourado);
-    }
-
-    .activity-time {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.4);
-      white-space: nowrap;
-    }
-
-    /* ===== TABELAS ===== */
-    .table-wrapper {
-      background: var(--cinza-escuro);
-      border-radius: var(--raio);
-      border: 1px solid var(--borda-dourada);
-      overflow-x: auto;
-      padding: 4px;
-      box-shadow: var(--sombra-card);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      min-width: 600px;
-    }
-
-    th {
-      text-align: left;
-      padding: 16px 18px;
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-bottom: 1px solid var(--borda-dourada);
-    }
-
-    td {
-      padding: 14px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tr:hover td {
-      background: rgba(212, 175, 55, 0.04);
-    }
-
-    .badge {
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 11px;
-      font-weight: 600;
-      display: inline-block;
-      letter-spacing: 0.3px;
-    }
-
-    .badge-gold {
-      background: rgba(212, 175, 55, 0.15);
-      color: var(--dourado);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .badge-green {
-      background: rgba(46, 125, 50, 0.2);
-      color: #6FCF97;
-      border: 1px solid rgba(46, 125, 50, 0.3);
-    }
-
-    .badge-red {
-      background: rgba(198, 40, 40, 0.2);
-      color: #EB5757;
-      border: 1px solid rgba(198, 40, 40, 0.3);
-    }
-
-    .badge-yellow {
-      background: rgba(249, 168, 37, 0.2);
-      color: #F2C94C;
-      border: 1px solid rgba(249, 168, 37, 0.3);
-    }
-
-    /* ===== CAMPO TÁTICO ===== */
-    .field-preview {
-      background: #0A1A0A;
-      background-image: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
-      border-radius: var(--raio);
-      border: 1px solid var(--borda-dourada);
-      padding: 30px 20px;
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--sombra-card);
-    }
-
-    .field-preview .pitch-lines {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.1;
-      background-image: 
-        linear-gradient(to right, transparent 49.5%, rgba(255,255,255,0.1) 49.5%, rgba(255,255,255,0.1) 50.5%, transparent 50.5%),
-        radial-gradient(circle at 50% 50%, transparent 14%, rgba(255,255,255,0.1) 14%, rgba(255,255,255,0.1) 15%, transparent 15%);
-    }
-
-    .formation-dots {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .player-dot {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--cinza-medio);
-      border: 2px solid var(--dourado);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 12px;
-      color: var(--dourado);
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
-      transition: var(--transicao);
-      cursor: default;
-    }
-
-    .player-dot:hover {
-      transform: scale(1.1);
-      background: var(--dourado);
-      color: var(--preto);
-    }
-
-    /* ===== FORMULÁRIO ===== */
-    .form-card {
-      background: var(--cinza-escuro);
-      border-radius: var(--raio);
-      border: 1px solid var(--borda-dourada);
-      padding: 28px 30px;
-      box-shadow: var(--sombra-card);
-      max-width: 800px;
-      margin: 0 auto;
-      animation: fadeUp 0.4s ease forwards;
-    }
-
-    .form-card h3 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .form-card h3 i {
-      color: var(--dourado);
-    }
-
-    .form-card .subtitle {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px 24px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 0.3px;
-    }
-
-    .form-group label .required {
-      color: var(--dourado);
-      margin-left: 2px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      background: var(--cinza-medio);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--raio-pequeno);
-      padding: 12px 16px;
-      color: var(--branco);
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      transition: var(--transicao);
-      outline: none;
-      width: 100%;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--dourado);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
-      background: var(--cinza-claro);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4AF37' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      cursor: pointer;
-    }
-
-    .form-group select option {
-      background: var(--cinza-escuro);
-      color: var(--branco);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 14px;
-      margin-top: 28px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    .btn-danger {
-      background: rgba(198, 40, 40, 0.15);
-      color: #EB5757;
-      border: 1px solid rgba(198, 40, 40, 0.3);
-    }
-
-    .btn-danger:hover {
-      background: rgba(198, 40, 40, 0.25);
-      border-color: #EB5757;
-    }
-
-    .success-message {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 20px;
-      background: rgba(46, 125, 50, 0.15);
-      border: 1px solid rgba(46, 125, 50, 0.4);
-      border-radius: var(--raio-pequeno);
-      color: #6FCF97;
-      font-weight: 500;
-      font-size: 14px;
-      margin-top: 20px;
-      animation: fadeUp 0.3s ease;
-    }
-
-    .success-message.show {
-      display: flex;
-    }
-
-    .success-message i {
-      font-size: 20px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .empty-state i {
-      font-size: 48px;
-      color: var(--dourado);
-      opacity: 0.3;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .empty-state p {
-      font-size: 15px;
-    }
-
-    /* ===== RESPONSIVO ===== */
-    @media (max-width: 1024px) {
-      .sidebar {
-        width: 220px;
-      }
-      .main {
-        margin-left: 220px;
-        padding: 20px 24px;
-      }
-    }
-
+    @media (max-width: 1024px) { .sidebar { width: 220px; } .main { margin-left: 220px; padding: 20px 24px; } }
     @media (max-width: 768px) {
-      .sidebar {
-        width: 70px;
-        padding: 16px 0;
-      }
-      .sidebar .logo-text,
-      .sidebar .nav-item span,
-      .sidebar .user-info {
-        display: none;
-      }
-      .sidebar .logo-area {
-        justify-content: center;
-        padding: 0 0 20px 0;
-      }
-      .sidebar .nav-item {
-        justify-content: center;
-        padding: 12px;
-      }
-      .sidebar .nav-item i {
-        font-size: 18px;
-      }
-      .sidebar .user-tag {
-        justify-content: center;
-        padding: 12px 0;
-      }
-      .main {
-        margin-left: 70px;
-        padding: 16px 14px;
-      }
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .header-actions {
-        width: 100%;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-      .card-value {
-        font-size: 22px;
-      }
-      .page-title h2 {
-        font-size: 22px;
-      }
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .form-card {
-        padding: 22px 18px;
-      }
+      .sidebar { width: 70px; padding: 16px 0; }
+      .sidebar .logo-text, .sidebar .nav-item span, .sidebar .user-info { display: none; }
+      .sidebar .logo-area { justify-content: center; padding: 0 0 20px 0; }
+      .sidebar .nav-item { justify-content: center; padding: 12px; }
+      .sidebar .user-tag { justify-content: center; padding: 12px 0; }
+      .main { margin-left: 70px; padding: 16px 14px; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 22px 18px; }
     }
-
     @media (max-width: 480px) {
-      .sidebar {
-        width: 60px;
-      }
-      .main {
-        margin-left: 60px;
-        padding: 12px 10px;
-      }
-      .shield {
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
-      }
-      .btn {
-        padding: 8px 16px;
-        font-size: 12px;
-      }
-      .card {
-        padding: 16px;
-      }
-      .activity-item {
-        flex-wrap: wrap;
-      }
+      .sidebar { width: 60px; } .main { margin-left: 60px; padding: 12px 10px; }
+      .shield { width: 40px; height: 40px; font-size: 22px; }
+      .btn { padding: 8px 16px; font-size: 12px; }
+      .card { padding: 16px; }
     }
 
-    /* ===== ANIMAÇÕES ===== */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(30px); } }
+    .card, .activity-item, .table-wrapper, .field-preview, .form-card { animation: fadeUp 0.4s ease forwards; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .card, .activity-item, .table-wrapper, .field-preview, .form-card {
-      animation: fadeUp 0.4s ease forwards;
-    }
+    .toast { position: fixed; bottom: 30px; right: 30px; background: var(--cinza-medio); border: 1px solid var(--dourado); border-radius: var(--raio); padding: 16px 24px; display: flex; align-items: center; gap: 14px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), var(--brilho-dourado); z-index: 999; animation: slideIn 0.3s ease; max-width: 400px; }
+    .toast i { color: var(--dourado); font-size: 22px; }
+    .toast.success i { color: #6FCF97; }
+    .toast.success { border-color: rgba(46, 125, 50, 0.6); }
+    .toast.error { border-color: rgba(198, 40, 40, 0.6); }
+    .toast.error i { color: #EB5757; }
 
-    .tab-content {
-      display: none;
-    }
+    .sync-status { position: fixed; top: 20px; right: 20px; background: var(--cinza-medio); border: 1px solid var(--borda-dourada); border-radius: 30px; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; gap: 8px; z-index: 200; transition: var(--transicao); }
+    .sync-status .dot-sync { width: 8px; height: 8px; border-radius: 50%; background: #F9A825; animation: pulse 1.5s infinite; }
+    .sync-status.online .dot-sync { background: #6FCF97; animation: none; }
+    .sync-status.offline .dot-sync { background: #EB5757; animation: none; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Toast de notificação */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: var(--cinza-medio);
-      border: 1px solid var(--dourado);
-      border-radius: var(--raio);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), var(--brilho-dourado);
-      z-index: 999;
-      animation: slideIn 0.3s ease;
-      max-width: 400px;
-    }
-
-    .toast i {
-      color: var(--dourado);
-      font-size: 22px;
-    }
-
-    .toast.success i {
-      color: #6FCF97;
-    }
-
-    .toast.success {
-      border-color: rgba(46, 125, 50, 0.6);
-    }
-
-    .toast.error {
-      border-color: rgba(198, 40, 40, 0.6);
-    }
-
-    .toast.error i {
-      color: #EB5757;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes slideOut {
-      from {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      to {
-        opacity: 0;
-        transform: translateX(30px);
-      }
-    }
+    .loading-overlay { position: fixed; inset: 0; background: rgba(8, 8, 8, 0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 16px; }
+    .loading-overlay.hidden { display: none; }
+    .spinner { width: 48px; height: 48px; border: 4px solid rgba(212, 175, 55, 0.2); border-top-color: var(--dourado); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <!-- ===== MENU LATERAL ===== -->
+  <!-- OVERLAY DE CARREGAMENTO -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <p style="color: var(--dourado); font-weight: 600;">Conectando ao servidor KINGS...</p>
+  </div>
+
+  <!-- STATUS DE SINCRONIZAÇÃO -->
+  <div class="sync-status" id="sync-status">
+    <span class="dot-sync"></span>
+    <span id="sync-text">Conectando...</span>
+  </div>
+
+  <!-- MENU LATERAL -->
   <aside class="sidebar">
     <div class="logo-area">
       <div class="shield">K</div>
@@ -974,59 +199,20 @@
     </div>
 
     <nav class="nav-menu">
-      <div class="nav-item active" data-tab="dashboard">
-        <i class="fas fa-th-large"></i>
-        <span>Painel</span>
-      </div>
-      <div class="nav-item" data-tab="add-player">
-        <i class="fas fa-user-plus"></i>
-        <span>Adicionar Jogador</span>
-      </div>
-      <div class="nav-item" data-tab="elenco">
-        <i class="fas fa-users"></i>
-        <span>Elenco</span>
-      </div>
-      <div class="nav-item" data-tab="quadro">
-        <i class="fas fa-chess-board"></i>
-        <span>Quadro Tático</span>
-      </div>
-      <div class="nav-item" data-tab="playbook">
-        <i class="fas fa-pen-fancy"></i>
-        <span>Playbook</span>
-      </div>
-      <div class="nav-item" data-tab="escalacao">
-        <i class="fas fa-clipboard-list"></i>
-        <span>Escalação</span>
-      </div>
-      <div class="nav-item" data-tab="partidas">
-        <i class="fas fa-futbol"></i>
-        <span>Partidas</span>
-      </div>
-      <div class="nav-item" data-tab="estatisticas">
-        <i class="fas fa-chart-bar"></i>
-        <span>Estatísticas</span>
-      </div>
-      <div class="nav-item" data-tab="treinos">
-        <i class="fas fa-calendar-alt"></i>
-        <span>Treinos</span>
-      </div>
+      <div class="nav-item active" data-tab="dashboard"><i class="fas fa-th-large"></i><span>Painel</span></div>
+      <div class="nav-item" data-tab="add-player"><i class="fas fa-user-plus"></i><span>Adicionar Jogador</span></div>
+      <div class="nav-item" data-tab="elenco"><i class="fas fa-users"></i><span>Elenco</span></div>
+      <div class="nav-item" data-tab="quadro"><i class="fas fa-chess-board"></i><span>Quadro Tático</span></div>
+      <div class="nav-item" data-tab="playbook"><i class="fas fa-pen-fancy"></i><span>Playbook</span></div>
+      <div class="nav-item" data-tab="escalacao"><i class="fas fa-clipboard-list"></i><span>Escalação</span></div>
+      <div class="nav-item" data-tab="partidas"><i class="fas fa-futbol"></i><span>Partidas</span></div>
+      <div class="nav-item" data-tab="estatisticas"><i class="fas fa-chart-bar"></i><span>Estatísticas</span></div>
+      <div class="nav-item" data-tab="treinos"><i class="fas fa-calendar-alt"></i><span>Treinos</span></div>
       <div class="nav-divider"></div>
-      <div class="nav-item" data-tab="medico">
-        <i class="fas fa-notes-medical"></i>
-        <span>Departamento Médico</span>
-      </div>
-      <div class="nav-item" data-tab="transferencias">
-        <i class="fas fa-exchange-alt"></i>
-        <span>Transferências</span>
-      </div>
-      <div class="nav-item" data-tab="conquistas">
-        <i class="fas fa-trophy"></i>
-        <span>Conquistas</span>
-      </div>
-      <div class="nav-item" data-tab="config">
-        <i class="fas fa-cog"></i>
-        <span>Configurações</span>
-      </div>
+      <div class="nav-item" data-tab="medico"><i class="fas fa-notes-medical"></i><span>Depto Médico</span></div>
+      <div class="nav-item" data-tab="transferencias"><i class="fas fa-exchange-alt"></i><span>Transferências</span></div>
+      <div class="nav-item" data-tab="conquistas"><i class="fas fa-trophy"></i><span>Conquistas</span></div>
+      <div class="nav-item" data-tab="config"><i class="fas fa-cog"></i><span>Configurações</span></div>
     </nav>
 
     <div class="user-tag">
@@ -1038,12 +224,10 @@
     </div>
   </aside>
 
-  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <!-- CONTEÚDO PRINCIPAL -->
   <main class="main">
 
-    <!-- ============================================ -->
-    <!-- ABA: PAINEL -->
-    <!-- ============================================ -->
+    <!-- PAINEL -->
     <div class="tab-content active" id="tab-dashboard">
       <div class="top-bar">
         <div class="page-title">
@@ -1051,205 +235,62 @@
           <p>Pensar. Jogar. Vencer.</p>
         </div>
         <div class="header-actions">
-          <div class="notification-badge">
+          <div class="notification-badge" onclick="mostrarToast('Você tem notificações!', 'success')">
             <i class="fas fa-bell"></i>
             <span class="dot"></span>
           </div>
-          <button class="btn btn-gold" onclick="switchTab('add-player')">
-            <i class="fas fa-plus"></i> Adicionar Jogador
-          </button>
+          <button class="btn btn-gold" onclick="switchTab('add-player')"><i class="fas fa-plus"></i> Adicionar Jogador</button>
         </div>
       </div>
 
       <div class="dashboard-grid">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">⚽ Próximo Jogo</span>
-            <i class="fas fa-futbol"></i>
-          </div>
-          <div class="card-value">—</div>
-          <div class="card-sub"><i class="far fa-calendar-alt"></i> Nenhum jogo agendado</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">🏆 Último Resultado</span>
-            <i class="fas fa-trophy"></i>
-          </div>
-          <div class="card-value">—</div>
-          <div class="card-sub"><i class="fas fa-clock"></i> Nenhum resultado registrado</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">👥 Elenco</span>
-            <i class="fas fa-users"></i>
-          </div>
-          <div class="card-value"><span id="player-count">0</span> <span style="font-size:16px;color:rgba(255,255,255,0.5);">jogadores</span></div>
-          <div class="card-sub"><span class="gold-text" id="available-count">0</span> disponíveis · <span style="color:#EB5757;" id="injured-count">0</span> lesionados</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">📅 Próximo Treino</span>
-            <i class="fas fa-calendar-alt"></i>
-          </div>
-          <div class="card-value">—</div>
-          <div class="card-sub"><i class="fas fa-map-pin"></i> Nenhum treino agendado</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">🎯 Artilharia</span>
-            <i class="fas fa-bullseye"></i>
-          </div>
-          <div class="card-value" id="top-scorer">—</div>
-          <div class="card-sub" id="top-scorer-sub">Nenhum jogador cadastrado</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">🅰️ Assistências</span>
-            <i class="fas fa-hands-helping"></i>
-          </div>
-          <div class="card-value" id="top-assister">—</div>
-          <div class="card-sub" id="top-assister-sub">Nenhum jogador cadastrado</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">📊 Melhor Avaliação</span>
-            <i class="fas fa-star"></i>
-          </div>
-          <div class="card-value" id="top-rating">—</div>
-          <div class="card-sub" id="top-rating-sub">Nenhum jogador cadastrado</div>
-        </div>
+        <div class="card"><div class="card-header"><span class="card-label">⚽ Próximo Jogo</span><i class="fas fa-futbol"></i></div><div class="card-value">—</div><div class="card-sub"><i class="far fa-calendar-alt"></i> Nenhum jogo agendado</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">🏆 Último Resultado</span><i class="fas fa-trophy"></i></div><div class="card-value">—</div><div class="card-sub"><i class="fas fa-clock"></i> Nenhum resultado</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">👥 Elenco</span><i class="fas fa-users"></i></div><div class="card-value"><span id="player-count">0</span> <span style="font-size:16px;color:rgba(255,255,255,0.5);">jogadores</span></div><div class="card-sub"><span class="gold-text" id="available-count">0</span> disponíveis · <span style="color:#EB5757;" id="injured-count">0</span> lesionados</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">📅 Próximo Treino</span><i class="fas fa-calendar-alt"></i></div><div class="card-value">—</div><div class="card-sub"><i class="fas fa-map-pin"></i> Nenhum treino</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">🎯 Artilharia</span><i class="fas fa-bullseye"></i></div><div class="card-value" id="top-scorer">—</div><div class="card-sub" id="top-scorer-sub">Nenhum jogador</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">🅰️ Assistências</span><i class="fas fa-hands-helping"></i></div><div class="card-value" id="top-assister">—</div><div class="card-sub" id="top-assister-sub">Nenhum jogador</div></div>
+        <div class="card"><div class="card-header"><span class="card-label">📊 Melhor Avaliação</span><i class="fas fa-star"></i></div><div class="card-value" id="top-rating">—</div><div class="card-sub" id="top-rating-sub">Nenhum jogador</div></div>
       </div>
 
-      <div class="section-title">
-        <h3><i class="fas fa-clock"></i> Últimas Atividades</h3>
-        <a href="#">Ver todas <i class="fas fa-arrow-right"></i></a>
-      </div>
-
+      <div class="section-title"><h3><i class="fas fa-clock"></i> Últimas Atividades</h3></div>
       <div class="activity-list" id="activity-list">
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <p>Nenhuma atividade registrada ainda.</p>
-        </div>
+        <div class="empty-state"><i class="fas fa-inbox"></i><p>Nenhuma atividade registrada ainda.</p></div>
       </div>
 
-      <div class="section-title" style="margin-top: 36px;">
-        <h3><i class="fas fa-chess-board"></i> Quadro Tático — 4-3-3</h3>
-        <a href="#" onclick="switchTab('quadro')">Abrir editor <i class="fas fa-arrow-right"></i></a>
-      </div>
-
+      <div class="section-title" style="margin-top: 36px;"><h3><i class="fas fa-chess-board"></i> Quadro Tático — 4-3-3</h3><a href="#" onclick="switchTab('quadro')">Abrir editor <i class="fas fa-arrow-right"></i></a></div>
       <div class="field-preview">
         <div class="pitch-lines"></div>
         <div class="formation-dots">
-          <div class="player-dot">G</div>
-          <div class="player-dot">LD</div>
-          <div class="player-dot">ZAG</div>
-          <div class="player-dot">ZAG</div>
-          <div class="player-dot">LE</div>
-          <div class="player-dot">VOL</div>
-          <div class="player-dot">MC</div>
-          <div class="player-dot">MEI</div>
-          <div class="player-dot">PD</div>
-          <div class="player-dot">ATA</div>
-          <div class="player-dot">PE</div>
-        </div>
-        <div style="margin-top: 18px; font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 1px;">
-          <i class="fas fa-arrows-alt"></i> Arraste os jogadores para posicionar
+          <div class="player-dot">G</div><div class="player-dot">LD</div><div class="player-dot">ZAG</div><div class="player-dot">ZAG</div><div class="player-dot">LE</div>
+          <div class="player-dot">VOL</div><div class="player-dot">MC</div><div class="player-dot">MEI</div>
+          <div class="player-dot">PD</div><div class="player-dot">ATA</div><div class="player-dot">PE</div>
         </div>
       </div>
 
-      <div class="section-title" style="margin-top: 36px;">
-        <h3><i class="fas fa-users"></i> Destaques do Elenco</h3>
-        <a href="#" onclick="switchTab('elenco')">Ver elenco completo <i class="fas fa-arrow-right"></i></a>
-      </div>
-
+      <div class="section-title" style="margin-top: 36px;"><h3><i class="fas fa-users"></i> Destaques do Elenco</h3><a href="#" onclick="switchTab('elenco')">Ver elenco completo <i class="fas fa-arrow-right"></i></a></div>
       <div class="table-wrapper">
         <table>
-          <thead>
-            <tr>
-              <th>Jogador</th>
-              <th>Posição</th>
-              <th>Jogos</th>
-              <th>Gols</th>
-              <th>Assist.</th>
-              <th>Nota</th>
-              <th>Status</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Jogador</th><th>Posição</th><th>Jogos</th><th>Gols</th><th>Assist.</th><th>Nota</th><th>Status</th></tr></thead>
           <tbody id="destaques-body">
-            <tr>
-              <td colspan="7" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">
-                <i class="fas fa-user-plus" style="font-size: 24px; display: block; margin-bottom: 8px; color: var(--dourado); opacity: 0.5;"></i>
-                Nenhum jogador cadastrado. Vá em "Adicionar Jogador" para começar.
-              </td>
-            </tr>
+            <tr><td colspan="7" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);"><i class="fas fa-user-plus" style="font-size: 24px; display: block; margin-bottom: 8px; color: var(--dourado); opacity: 0.5;"></i>Nenhum jogador cadastrado.</td></tr>
           </tbody>
         </table>
       </div>
 
-      <div class="section-title" style="margin-top: 36px;">
-        <h3><i class="fas fa-crown"></i> Rankings Internos</h3>
-        <a href="#" onclick="switchTab('estatisticas')">Ver estatísticas completas <i class="fas fa-arrow-right"></i></a>
-      </div>
-
+      <div class="section-title" style="margin-top: 36px;"><h3><i class="fas fa-crown"></i> Rankings Internos</h3></div>
       <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">🎯 Artilharia</span>
-            <i class="fas fa-bullseye"></i>
-          </div>
-          <div style="margin-top: 8px;" id="ranking-artilharia">
-            <div class="empty-state" style="padding: 16px;">
-              <p>Sem dados</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">🅰️ Assistências</span>
-            <i class="fas fa-hands-helping"></i>
-          </div>
-          <div style="margin-top: 8px;" id="ranking-assistencias">
-            <div class="empty-state" style="padding: 16px;">
-              <p>Sem dados</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <span class="card-label">⭐ Melhor Média</span>
-            <i class="fas fa-star"></i>
-          </div>
-          <div style="margin-top: 8px;" id="ranking-media">
-            <div class="empty-state" style="padding: 16px;">
-              <p>Sem dados</p>
-            </div>
-          </div>
-        </div>
+        <div class="card"><div class="card-header"><span class="card-label">🎯 Artilharia</span><i class="fas fa-bullseye"></i></div><div style="margin-top: 8px;" id="ranking-artilharia"><div class="empty-state" style="padding:16px;"><p>Sem dados</p></div></div></div>
+        <div class="card"><div class="card-header"><span class="card-label">🅰️ Assistências</span><i class="fas fa-hands-helping"></i></div><div style="margin-top: 8px;" id="ranking-assistencias"><div class="empty-state" style="padding:16px;"><p>Sem dados</p></div></div></div>
+        <div class="card"><div class="card-header"><span class="card-label">⭐ Melhor Média</span><i class="fas fa-star"></i></div><div style="margin-top: 8px;" id="ranking-media"><div class="empty-state" style="padding:16px;"><p>Sem dados</p></div></div></div>
       </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- ABA: ADICIONAR JOGADOR -->
-    <!-- ============================================ -->
+    <!-- ADICIONAR JOGADOR -->
     <div class="tab-content" id="tab-add-player">
       <div class="top-bar">
-        <div class="page-title">
-          <h2>Adicionar <span>Jogador</span></h2>
-          <p>Cadastre um novo atleta no elenco do KINGS</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-outline" onclick="switchTab('dashboard')">
-            <i class="fas fa-arrow-left"></i> Voltar
-          </button>
-        </div>
+        <div class="page-title"><h2>Adicionar <span>Jogador</span></h2><p>Cadastre um novo atleta no elenco do KINGS</p></div>
+        <div class="header-actions"><button class="btn btn-outline" onclick="switchTab('dashboard')"><i class="fas fa-arrow-left"></i> Voltar</button></div>
       </div>
 
       <div class="form-card">
@@ -1258,328 +299,141 @@
 
         <form id="player-form">
           <div class="form-grid">
-            <div class="form-group">
-              <label>Nome completo <span class="required">*</span></label>
-              <input type="text" id="player-name" placeholder="Ex: João Pedro Silva" required>
-            </div>
-
-            <div class="form-group">
-              <label>Apelido</label>
-              <input type="text" id="player-nickname" placeholder="Ex: JP">
-            </div>
-
-            <div class="form-group">
-              <label>Número da camisa <span class="required">*</span></label>
-              <input type="number" id="player-number" placeholder="Ex: 10" min="1" max="99" required>
-            </div>
-
-            <div class="form-group">
-              <label>Posição <span class="required">*</span></label>
+            <div class="form-group"><label>Nome completo <span class="required">*</span></label><input type="text" id="player-name" placeholder="Ex: João Pedro Silva" required></div>
+            <div class="form-group"><label>Apelido</label><input type="text" id="player-nickname" placeholder="Ex: JP"></div>
+            <div class="form-group"><label>Número da camisa <span class="required">*</span></label><input type="number" id="player-number" placeholder="Ex: 10" min="1" max="99" required></div>
+            <div class="form-group"><label>Posição <span class="required">*</span></label>
               <select id="player-position" required>
                 <option value="">Selecione...</option>
-                <option value="Goleiro">Goleiro</option>
-                <option value="Zagueiro">Zagueiro</option>
-                <option value="Lateral">Lateral</option>
-                <option value="Volante">Volante</option>
-                <option value="Meia">Meia</option>
-                <option value="Ponta">Ponta</option>
-                <option value="Atacante">Atacante</option>
+                <option value="Goleiro">Goleiro</option><option value="Zagueiro">Zagueiro</option>
+                <option value="Lateral">Lateral</option><option value="Volante">Volante</option>
+                <option value="Meia">Meia</option><option value="Ponta">Ponta</option><option value="Atacante">Atacante</option>
               </select>
             </div>
-
-            <div class="form-group">
-              <label>Pé dominante</label>
-              <select id="player-foot">
-                <option value="Direito">Direito</option>
-                <option value="Esquerdo">Esquerdo</option>
-                <option value="Ambos">Ambos</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Idade</label>
-              <input type="number" id="player-age" placeholder="Ex: 24" min="15" max="50">
-            </div>
-
-            <div class="form-group">
-              <label>Altura (cm)</label>
-              <input type="number" id="player-height" placeholder="Ex: 178" min="140" max="220">
-            </div>
-
-            <div class="form-group">
-              <label>Status</label>
-              <select id="player-status">
-                <option value="Disponível">Disponível</option>
-                <option value="Em recuperação">Em recuperação</option>
-                <option value="Indisponível">Indisponível</option>
-              </select>
-            </div>
-
-            <div class="form-group full-width">
-              <label>Observações</label>
-              <textarea id="player-notes" placeholder="Notas sobre o jogador..."></textarea>
-            </div>
+            <div class="form-group"><label>Pé dominante</label><select id="player-foot"><option value="Direito">Direito</option><option value="Esquerdo">Esquerdo</option><option value="Ambos">Ambos</option></select></div>
+            <div class="form-group"><label>Idade</label><input type="number" id="player-age" placeholder="Ex: 24" min="15" max="50"></div>
+            <div class="form-group"><label>Altura (cm)</label><input type="number" id="player-height" placeholder="Ex: 178" min="140" max="220"></div>
+            <div class="form-group"><label>Status</label><select id="player-status"><option value="Disponível">Disponível</option><option value="Em recuperação">Em recuperação</option><option value="Indisponível">Indisponível</option></select></div>
+            <div class="form-group full-width"><label>Observações</label><textarea id="player-notes" placeholder="Notas sobre o jogador..."></textarea></div>
           </div>
-
           <div class="form-actions">
-            <button type="button" class="btn btn-outline" onclick="limparFormulario()">
-              <i class="fas fa-eraser"></i> Limpar
-            </button>
-            <button type="submit" class="btn btn-gold">
-              <i class="fas fa-save"></i> Cadastrar Jogador
-            </button>
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('player-form').reset()"><i class="fas fa-eraser"></i> Limpar</button>
+            <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Cadastrar Jogador</button>
           </div>
-
-          <div class="success-message" id="success-message">
-            <i class="fas fa-check-circle"></i>
-            <span id="success-text">Jogador cadastrado com sucesso!</span>
-          </div>
+          <div class="success-message" id="success-message"><i class="fas fa-check-circle"></i><span id="success-text">Jogador cadastrado!</span></div>
         </form>
       </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- ABA: ELENCO -->
-    <!-- ============================================ -->
+    <!-- ELENCO -->
     <div class="tab-content" id="tab-elenco">
       <div class="top-bar">
-        <div class="page-title">
-          <h2>Elenco <span>KINGS</span></h2>
-          <p>Todos os jogadores cadastrados</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-gold" onclick="switchTab('add-player')">
-            <i class="fas fa-plus"></i> Adicionar Jogador
-          </button>
-        </div>
+        <div class="page-title"><h2>Elenco <span>KINGS</span></h2><p>Todos os jogadores cadastrados</p></div>
+        <div class="header-actions"><button class="btn btn-gold" onclick="switchTab('add-player')"><i class="fas fa-plus"></i> Adicionar Jogador</button></div>
       </div>
-
       <div class="table-wrapper">
         <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nome</th>
-              <th>Apelido</th>
-              <th>Posição</th>
-              <th>Pé</th>
-              <th>Idade</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
+          <thead><tr><th>#</th><th>Nome</th><th>Apelido</th><th>Posição</th><th>Pé</th><th>Idade</th><th>Status</th><th>Ações</th></tr></thead>
           <tbody id="elenco-body">
-            <tr>
-              <td colspan="8" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">
-                Nenhum jogador cadastrado ainda.
-              </td>
-            </tr>
+            <tr><td colspan="8" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">Nenhum jogador cadastrado ainda.</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- ============================================ -->
     <!-- OUTRAS ABAS -->
-    <!-- ============================================ -->
-    <div class="tab-content" id="tab-quadro">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Quadro <span>Tático</span></h2>
-          <p>Arraste os jogadores e monte sua formação</p>
-        </div>
-      </div>
-      <div class="field-preview" style="min-height: 400px;">
-        <div class="pitch-lines"></div>
-        <div class="formation-dots">
-          <div class="player-dot">G</div>
-          <div class="player-dot">LD</div>
-          <div class="player-dot">ZAG</div>
-          <div class="player-dot">ZAG</div>
-          <div class="player-dot">LE</div>
-          <div class="player-dot">VOL</div>
-          <div class="player-dot">MC</div>
-          <div class="player-dot">MEI</div>
-          <div class="player-dot">PD</div>
-          <div class="player-dot">ATA</div>
-          <div class="player-dot">PE</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-playbook">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Playbook <span>KINGS</span></h2>
-          <p>Crie jogadas visualmente</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-pen-fancy"></i>
-        <p>Em breve: Criador de jogadas interativo.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-escalacao">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Escalação <span>da Partida</span></h2>
-          <p>Monte a escalação para o próximo jogo</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-clipboard-list"></i>
-        <p>Em breve: Sistema de escalação.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-partidas">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Calendário de <span>Partidas</span></h2>
-          <p>Todas as partidas do KINGS</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-futbol"></i>
-        <p>Em breve: Calendário completo de partidas.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-estatisticas">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Estatísticas <span>do Time</span></h2>
-          <p>Painel completo de desempenho</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-chart-bar"></i>
-        <p>Em breve: Gráficos e estatísticas detalhadas.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-treinos">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Treinos <span>e Atividades</span></h2>
-          <p>Gerencie os treinos do elenco</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-calendar-alt"></i>
-        <p>Em breve: Sistema de treinos e presença.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-medico">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Departamento <span>Médico</span></h2>
-          <p>Controle de disponibilidade dos jogadores</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-notes-medical"></i>
-        <p>Em breve: Controle médico completo.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-transferencias">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Transferências <span>e Movimentações</span></h2>
-          <p>Histórico de entradas e saídas</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-exchange-alt"></i>
-        <p>Em breve: Registro de transferências.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-conquistas">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>História <span>dos KINGS</span></h2>
-          <p>Títulos, troféus e recordes</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-trophy"></i>
-        <p>Em breve: Timeline e conquistas do clube.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-config">
-      <div class="top-bar">
-        <div class="page-title">
-          <h2>Configurações <span>do Sistema</span></h2>
-          <p>Gerencie preferências e usuários</p>
-        </div>
-      </div>
-      <div class="empty-state">
-        <i class="fas fa-cog"></i>
-        <p>Em breve: Painel de configurações.</p>
-      </div>
-    </div>
+    <div class="tab-content" id="tab-quadro"><div class="top-bar"><div class="page-title"><h2>Quadro <span>Tático</span></h2><p>Arraste os jogadores</p></div></div><div class="field-preview" style="min-height: 400px;"><div class="pitch-lines"></div><div class="formation-dots"><div class="player-dot">G</div><div class="player-dot">LD</div><div class="player-dot">ZAG</div><div class="player-dot">ZAG</div><div class="player-dot">LE</div><div class="player-dot">VOL</div><div class="player-dot">MC</div><div class="player-dot">MEI</div><div class="player-dot">PD</div><div class="player-dot">ATA</div><div class="player-dot">PE</div></div></div></div>
+    <div class="tab-content" id="tab-playbook"><div class="top-bar"><div class="page-title"><h2>Playbook <span>KINGS</span></h2></div></div><div class="empty-state"><i class="fas fa-pen-fancy"></i><p>Em breve: Criador de jogadas.</p></div></div>
+    <div class="tab-content" id="tab-escalacao"><div class="top-bar"><div class="page-title"><h2>Escalação</h2></div></div><div class="empty-state"><i class="fas fa-clipboard-list"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-partidas"><div class="top-bar"><div class="page-title"><h2>Partidas</h2></div></div><div class="empty-state"><i class="fas fa-futbol"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-estatisticas"><div class="top-bar"><div class="page-title"><h2>Estatísticas</h2></div></div><div class="empty-state"><i class="fas fa-chart-bar"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-treinos"><div class="top-bar"><div class="page-title"><h2>Treinos</h2></div></div><div class="empty-state"><i class="fas fa-calendar-alt"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-medico"><div class="top-bar"><div class="page-title"><h2>Depto Médico</h2></div></div><div class="empty-state"><i class="fas fa-notes-medical"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-transferencias"><div class="top-bar"><div class="page-title"><h2>Transferências</h2></div></div><div class="empty-state"><i class="fas fa-exchange-alt"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-conquistas"><div class="top-bar"><div class="page-title"><h2>Conquistas</h2></div></div><div class="empty-state"><i class="fas fa-trophy"></i><p>Em breve.</p></div></div>
+    <div class="tab-content" id="tab-config"><div class="top-bar"><div class="page-title"><h2>Configurações</h2></div></div><div class="empty-state"><i class="fas fa-cog"></i><p>Em breve.</p></div></div>
 
   </main>
 
-  <!-- ===== SCRIPT ===== -->
-  <script>
-    // ============================================
-    // NAVEGAÇÃO ENTRE ABAS
-    // ============================================
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
+  <!-- ===== FIREBASE SDK v10 (módulos) ===== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+    // ============================================
+    // SUAS CREDENCIAIS DO FIREBASE
+    // ============================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyAQvl8w4MjMRHYQ71Ke0_kEp_VKCGmfzlE",
+      authDomain: "kings-futebol.firebaseapp.com",
+      databaseURL: "https://kings-futebol-default-rtdb.firebaseio.com",
+      projectId: "kings-futebol",
+      storageBucket: "kings-futebol.firebasestorage.app",
+      messagingSenderId: "405113590140",
+      appId: "1:405113590140:web:d9befb8d0bc861a9f354f9",
+      measurementId: "G-NVP8NSYPGS"
+    };
+
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const jogadoresRef = ref(db, 'kings/jogadores');
+
+    // ============================================
+    // VARIÁVEIS GLOBAIS
+    // ============================================
+    let jogadores = [];
+    let firebaseConectado = false;
+
+    // ============================================
+    // NAVEGAÇÃO
+    // ============================================
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       const target = document.getElementById('tab-' + tabId);
-      if (target) {
-        target.classList.add('active');
-      }
-
+      if (target) target.classList.add('active');
       document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
-        if (item.dataset.tab === tabId) {
-          item.classList.add('active');
-        }
+        if (item.dataset.tab === tabId) item.classList.add('active');
       });
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    };
 
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', function() {
-        const tab = this.dataset.tab;
-        if (tab) {
-          switchTab(tab);
-        }
+        if (this.dataset.tab) window.switchTab(this.dataset.tab);
       });
     });
 
     // ============================================
-    // GERENCIAMENTO DE JOGADORES
+    // TOAST
     // ============================================
-    let jogadores = [];
+    window.mostrarToast = function(mensagem, tipo = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${tipo}`;
+      toast.innerHTML = `<i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><span>${mensagem}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
 
-    function carregarJogadores() {
-      const armazenado = localStorage.getItem('kings_jogadores');
-      if (armazenado) {
-        try {
-          jogadores = JSON.parse(armazenado);
-        } catch (e) {
-          jogadores = [];
-        }
+    // ============================================
+    // STATUS DE SINCRONIZAÇÃO
+    // ============================================
+    function atualizarStatusSync(status, texto) {
+      const el = document.getElementById('sync-status');
+      const txt = document.getElementById('sync-text');
+      if (el && txt) {
+        el.className = 'sync-status ' + status;
+        txt.textContent = texto;
       }
     }
 
-    function salvarJogadores() {
-      localStorage.setItem('kings_jogadores', JSON.stringify(jogadores));
-    }
-
+    // ============================================
+    // ATUALIZAR INTERFACE
+    // ============================================
     function atualizarInterface() {
       atualizarContadoresPainel();
       atualizarDestaques();
@@ -1593,14 +447,12 @@
       const total = jogadores.length;
       const disponiveis = jogadores.filter(j => j.status === 'Disponível').length;
       const lesionados = jogadores.filter(j => j.status === 'Em recuperação' || j.status === 'Indisponível').length;
-
       document.getElementById('player-count').textContent = total;
       document.getElementById('available-count').textContent = disponiveis;
       document.getElementById('injured-count').textContent = lesionados;
     }
 
     function atualizarCardsTopo() {
-      // Artilheiro
       const artilheiro = [...jogadores].sort((a, b) => (b.gols || 0) - (a.gols || 0))[0];
       const topScorerEl = document.getElementById('top-scorer');
       const topScorerSubEl = document.getElementById('top-scorer-sub');
@@ -1609,10 +461,9 @@
         topScorerSubEl.innerHTML = `<span class="gold-text">${artilheiro.gols}</span> gols · ${artilheiro.jogos || 0} jogos`;
       } else {
         topScorerEl.textContent = '—';
-        topScorerSubEl.textContent = jogadores.length ? 'Nenhum gol marcado ainda' : 'Nenhum jogador cadastrado';
+        topScorerSubEl.textContent = jogadores.length ? 'Nenhum gol marcado' : 'Nenhum jogador';
       }
 
-      // Assistente
       const assistente = [...jogadores].sort((a, b) => (b.assistencias || 0) - (a.assistencias || 0))[0];
       const topAssisterEl = document.getElementById('top-assister');
       const topAssisterSubEl = document.getElementById('top-assister-sub');
@@ -1621,10 +472,9 @@
         topAssisterSubEl.innerHTML = `<span class="gold-text">${assistente.assistencias}</span> assistências`;
       } else {
         topAssisterEl.textContent = '—';
-        topAssisterSubEl.textContent = jogadores.length ? 'Nenhuma assistência ainda' : 'Nenhum jogador cadastrado';
+        topAssisterSubEl.textContent = jogadores.length ? 'Nenhuma assistência' : 'Nenhum jogador';
       }
 
-      // Melhor avaliação
       const melhor = [...jogadores].filter(j => j.nota).sort((a, b) => b.nota - a.nota)[0];
       const topRatingEl = document.getElementById('top-rating');
       const topRatingSubEl = document.getElementById('top-rating-sub');
@@ -1633,132 +483,77 @@
         topRatingSubEl.innerHTML = `<span class="gold-text">${melhor.nota}</span> de média`;
       } else {
         topRatingEl.textContent = '—';
-        topRatingSubEl.textContent = 'Nenhum jogador cadastrado';
+        topRatingSubEl.textContent = 'Nenhum jogador';
       }
     }
 
     function atualizarDestaques() {
       const tbody = document.getElementById('destaques-body');
       if (!tbody) return;
-
       if (jogadores.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">
-              <i class="fas fa-user-plus" style="font-size: 24px; display: block; margin-bottom: 8px; color: var(--dourado); opacity: 0.5;"></i>
-              Nenhum jogador cadastrado. Vá em "Adicionar Jogador" para começar.
-            </td>
-          </tr>
-        `;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);"><i class="fas fa-user-plus" style="font-size: 24px; display: block; margin-bottom: 8px; color: var(--dourado); opacity: 0.5;"></i>Nenhum jogador cadastrado.</td></tr>`;
         return;
       }
-
       const ordenados = [...jogadores].sort((a, b) => (b.nota || 0) - (a.nota || 0)).slice(0, 5);
-
       tbody.innerHTML = ordenados.map(j => {
-        const classeStatus = j.status === 'Disponível' ? 'badge-green' :
-                             j.status === 'Em recuperação' ? 'badge-yellow' : 'badge-red';
-        return `
-          <tr>
-            <td><strong>${j.apelido || j.nome}</strong> <span style="color:rgba(255,255,255,0.4);font-size:12px;">#${j.numero}</span></td>
-            <td>${j.posicao}</td>
-            <td>${j.jogos || 0}</td>
-            <td><span class="gold-text">${j.gols || 0}</span></td>
-            <td>${j.assistencias || 0}</td>
-            <td><span class="badge badge-gold">${j.nota || '—'}</span></td>
-            <td><span class="badge ${classeStatus}">${j.status}</span></td>
-          </tr>
-        `;
+        const cls = j.status === 'Disponível' ? 'badge-green' : j.status === 'Em recuperação' ? 'badge-yellow' : 'badge-red';
+        return `<tr>
+          <td><strong>${j.apelido || j.nome}</strong> <span style="color:rgba(255,255,255,0.4);font-size:12px;">#${j.numero}</span></td>
+          <td>${j.posicao}</td><td>${j.jogos || 0}</td>
+          <td><span class="gold-text">${j.gols || 0}</span></td>
+          <td>${j.assistencias || 0}</td>
+          <td><span class="badge badge-gold">${j.nota || '—'}</span></td>
+          <td><span class="badge ${cls}">${j.status}</span></td>
+        </tr>`;
       }).join('');
     }
 
     function atualizarElenco() {
       const tbody = document.getElementById('elenco-body');
       if (!tbody) return;
-
       if (jogadores.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="8" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">
-              Nenhum jogador cadastrado ainda.
-            </td>
-          </tr>
-        `;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 30px; color: rgba(255,255,255,0.4);">Nenhum jogador cadastrado ainda.</td></tr>`;
         return;
       }
-
       tbody.innerHTML = jogadores.map(j => {
-        const classeStatus = j.status === 'Disponível' ? 'badge-green' :
-                             j.status === 'Em recuperação' ? 'badge-yellow' : 'badge-red';
-        return `
-          <tr>
-            <td><span style="color:var(--dourado);font-weight:700;">#${j.numero}</span></td>
-            <td><strong>${j.nome}</strong></td>
-            <td>${j.apelido || '—'}</td>
-            <td>${j.posicao}</td>
-            <td>${j.pe}</td>
-            <td>${j.idade || '—'}</td>
-            <td><span class="badge ${classeStatus}">${j.status}</span></td>
-            <td>
-              <button class="btn btn-outline btn-sm" onclick="excluirJogador(${j.id})" style="border-color: rgba(198,40,40,0.4); color: #EB5757;">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-        `;
+        const cls = j.status === 'Disponível' ? 'badge-green' : j.status === 'Em recuperação' ? 'badge-yellow' : 'badge-red';
+        return `<tr>
+          <td><span style="color:var(--dourado);font-weight:700;">#${j.numero}</span></td>
+          <td><strong>${j.nome}</strong></td><td>${j.apelido || '—'}</td>
+          <td>${j.posicao}</td><td>${j.pe}</td><td>${j.idade || '—'}</td>
+          <td><span class="badge ${cls}">${j.status}</span></td>
+          <td><button class="btn btn-outline btn-sm" onclick="excluirJogador('${j.id}')" style="border-color: rgba(198,40,40,0.4); color: #EB5757;"><i class="fas fa-trash"></i></button></td>
+        </tr>`;
       }).join('');
     }
 
     function atualizarRankings() {
-      // Artilharia
       const artEl = document.getElementById('ranking-artilharia');
       if (artEl) {
         if (jogadores.length === 0) {
           artEl.innerHTML = '<div class="empty-state" style="padding:16px;"><p>Sem dados</p></div>';
         } else {
-          const ordenados = [...jogadores].sort((a, b) => (b.gols || 0) - (a.gols || 0)).slice(0, 3);
-          artEl.innerHTML = ordenados.map((j, i) => `
-            <div style="display:flex; justify-content:space-between; padding:6px 0; ${i < 2 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}">
-              <span>${i+1}. ${j.apelido || j.nome}</span>
-              <span class="${i === 0 ? 'gold-text' : ''}">${j.gols || 0}</span>
-            </div>
-          `).join('');
+          const ord = [...jogadores].sort((a, b) => (b.gols || 0) - (a.gols || 0)).slice(0, 3);
+          artEl.innerHTML = ord.map((j, i) => `<div style="display:flex; justify-content:space-between; padding:6px 0; ${i < 2 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}"><span>${i+1}. ${j.apelido || j.nome}</span><span class="${i === 0 ? 'gold-text' : ''}">${j.gols || 0}</span></div>`).join('');
         }
       }
-
-      // Assistências
       const assEl = document.getElementById('ranking-assistencias');
       if (assEl) {
         if (jogadores.length === 0) {
           assEl.innerHTML = '<div class="empty-state" style="padding:16px;"><p>Sem dados</p></div>';
         } else {
-          const ordenados = [...jogadores].sort((a, b) => (b.assistencias || 0) - (a.assistencias || 0)).slice(0, 3);
-          assEl.innerHTML = ordenados.map((j, i) => `
-            <div style="display:flex; justify-content:space-between; padding:6px 0; ${i < 2 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}">
-              <span>${i+1}. ${j.apelido || j.nome}</span>
-              <span class="${i === 0 ? 'gold-text' : ''}">${j.assistencias || 0}</span>
-            </div>
-          `).join('');
+          const ord = [...jogadores].sort((a, b) => (b.assistencias || 0) - (a.assistencias || 0)).slice(0, 3);
+          assEl.innerHTML = ord.map((j, i) => `<div style="display:flex; justify-content:space-between; padding:6px 0; ${i < 2 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}"><span>${i+1}. ${j.apelido || j.nome}</span><span class="${i === 0 ? 'gold-text' : ''}">${j.assistencias || 0}</span></div>`).join('');
         }
       }
-
-      // Média
       const medEl = document.getElementById('ranking-media');
       if (medEl) {
         if (jogadores.length === 0) {
           medEl.innerHTML = '<div class="empty-state" style="padding:16px;"><p>Sem dados</p></div>';
         } else {
-          const comNota = jogadores.filter(j => j.nota).sort((a, b) => b.nota - a.nota).slice(0, 3);
-          if (comNota.length === 0) {
-            medEl.innerHTML = '<div class="empty-state" style="padding:16px;"><p>Sem dados</p></div>';
-          } else {
-            medEl.innerHTML = comNota.map((j, i) => `
-              <div style="display:flex; justify-content:space-between; padding:6px 0; ${i < comNota.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}">
-                <span>${i+1}. ${j.apelido || j.nome}</span>
-                <span class="${i === 0 ? 'gold-text' : ''}">${j.nota}</span>
-              </div>
-            `).join('');
-          }
+          const cn = jogadores.filter(j => j.nota).sort((a, b) => b.nota - a.nota).slice(0, 3);
+          medEl.innerHTML = cn.length === 0 ? '<div class="empty-state" style="padding:16px;"><p>Sem dados</p></div>' :
+            cn.map((j, i) => `<div style="display:flex; justify-content:space-between; padding:6px 0; ${i < cn.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}"><span>${i+1}. ${j.apelido || j.nome}</span><span class="${i === 0 ? 'gold-text' : ''}">${j.nota}</span></div>`).join('');
         }
       }
     }
@@ -1766,72 +561,65 @@
     function atualizarAtividades() {
       const lista = document.getElementById('activity-list');
       if (!lista) return;
-
       if (jogadores.length === 0) {
-        lista.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-inbox"></i>
-            <p>Nenhuma atividade registrada ainda.</p>
-          </div>
-        `;
+        lista.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>Nenhuma atividade registrada ainda.</p></div>`;
         return;
       }
-
-      const recentes = jogadores.slice(-5).reverse();
-      lista.innerHTML = recentes.map(j => `
-        <div class="activity-item">
-          <div class="activity-icon"><i class="fas fa-user-plus"></i></div>
-          <div class="activity-text"><strong>Jogador adicionado</strong> — ${j.nome} (${j.posicao})</div>
-          <div class="activity-time">agora</div>
-        </div>
-      `).join('');
+      const rec = jogadores.slice(-5).reverse();
+      lista.innerHTML = rec.map(j => `<div class="activity-item"><div class="activity-icon"><i class="fas fa-user-plus"></i></div><div class="activity-text"><strong>Jogador adicionado</strong> — ${j.nome} (${j.posicao})</div><div class="activity-time">recente</div></div>`).join('');
     }
 
     // ============================================
     // EXCLUIR JOGADOR
     // ============================================
-    function excluirJogador(id) {
-      const jogador = jogadores.find(j => j.id === id);
-      if (!jogador) return;
+    window.excluirJogador = async function(id) {
+      const j = jogadores.find(x => String(x.id) === String(id));
+      if (!j) return;
+      if (!confirm(`Tem certeza que deseja excluir ${j.nome}?`)) return;
 
-      if (confirm(`Tem certeza que deseja excluir ${jogador.nome}?`)) {
-        jogadores = jogadores.filter(j => j.id !== id);
-        salvarJogadores();
-        atualizarInterface();
-        mostrarToast(`${jogador.nome} foi excluído.`, 'error');
+      try {
+        await remove(ref(db, `kings/jogadores/${id}`));
+        mostrarToast(`${j.nome} foi excluído.`, 'error');
+      } catch (err) {
+        console.error(err);
+        mostrarToast('Erro ao excluir. Tente novamente.', 'error');
       }
-    }
+    };
 
     // ============================================
-    // LIMPAR FORMULÁRIO
+    // SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
     // ============================================
-    function limparFormulario() {
-      document.getElementById('player-form').reset();
-    }
+    onValue(jogadoresRef, (snapshot) => {
+      firebaseConectado = true;
+      document.getElementById('loading-overlay').classList.add('hidden');
+      atualizarStatusSync('online', 'Sincronizado');
 
-    // ============================================
-    // TOAST DE NOTIFICAÇÃO
-    // ============================================
-    function mostrarToast(mensagem, tipo = 'success') {
-      const toast = document.createElement('div');
-      toast.className = `toast ${tipo}`;
-      toast.innerHTML = `
-        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-        <span>${mensagem}</span>
-      `;
-      document.body.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease forwards';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
+      const dados = snapshot.val();
+      if (dados) {
+        jogadores = Object.values(dados);
+      } else {
+        jogadores = [];
+      }
+      atualizarInterface();
+      console.log('🔄 Dados sincronizados:', jogadores.length, 'jogadores');
+    }, (erro) => {
+      firebaseConectado = false;
+      document.getElementById('loading-overlay').classList.add('hidden');
+      atualizarStatusSync('offline', 'Offline');
+      console.error('❌ Erro Firebase:', erro);
+      mostrarToast('Erro de conexão. Verifique o Firebase.', 'error');
+    });
 
     // ============================================
     // ENVIO DO FORMULÁRIO
     // ============================================
-    document.getElementById('player-form').addEventListener('submit', function(e) {
+    document.getElementById('player-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      if (!firebaseConectado) {
+        mostrarToast('Aguarde a conexão com o servidor...', 'error');
+        return;
+      }
 
       const nome = document.getElementById('player-name').value.trim();
       const apelido = document.getElementById('player-nickname').value.trim();
@@ -1844,76 +632,44 @@
       const observacoes = document.getElementById('player-notes').value.trim();
 
       if (!nome || !numero || !posicao) {
-        mostrarToast('Preencha os campos obrigatórios: Nome, Número e Posição.', 'error');
+        mostrarToast('Preencha os campos obrigatórios.', 'error');
         return;
       }
 
       if (jogadores.some(j => j.numero === numero)) {
-        mostrarToast(`O número #${numero} já está em uso. Escolha outro número.`, 'error');
+        mostrarToast(`O número #${numero} já está em uso.`, 'error');
         return;
       }
 
+      const id = Date.now().toString();
       const novoJogador = {
-        id: Date.now(),
-        nome,
-        apelido: apelido || nome.split(' ')[0],
-        numero,
-        posicao,
-        pe,
-        idade: idade || '—',
-        altura: altura || '—',
-        status,
-        observacoes,
-        jogos: 0,
-        gols: 0,
-        assistencias: 0,
-        cartoesAmarelos: 0,
-        cartoesVermelhos: 0,
-        minutos: 0,
-        nota: (Math.random() * 2 + 7).toFixed(1),
+        id, nome, apelido: apelido || nome.split(' ')[0], numero, posicao, pe,
+        idade: idade || '—', altura: altura || '—', status, observacoes,
+        jogos: 0, gols: 0, assistencias: 0, cartoesAmarelos: 0, cartoesVermelhos: 0,
+        minutos: 0, nota: (Math.random() * 2 + 7).toFixed(1),
         criadoEm: new Date().toISOString()
       };
 
-      jogadores.push(novoJogador);
-      salvarJogadores();
-      atualizarInterface();
-
-      const msg = document.getElementById('success-message');
-      const txt = document.getElementById('success-text');
-      txt.textContent = `${novoJogador.nome} cadastrado com sucesso! (#${novoJogador.numero})`;
-      msg.classList.add('show');
-
-      mostrarToast(`${novoJogador.nome} cadastrado com sucesso!`, 'success');
-
-      this.reset();
-
-      setTimeout(() => {
-        msg.classList.remove('show');
-      }, 4000);
-
-      // Rolar para o topo da lista de elenco se estiver nela
-      if (document.getElementById('tab-elenco').classList.contains('active')) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        await set(ref(db, `kings/jogadores/${id}`), novoJogador);
+        mostrarToast(`${novoJogador.nome} cadastrado com sucesso!`, 'success');
+        this.reset();
+      } catch (err) {
+        console.error(err);
+        mostrarToast('Erro ao salvar. Tente novamente.', 'error');
       }
     });
 
     // ============================================
-    // INICIALIZAÇÃO
+    // BOTÃO DE NOTIFICAÇÃO
     // ============================================
-    carregarJogadores();
-    atualizarInterface();
-
     document.querySelector('.notification-badge')?.addEventListener('click', function() {
-      this.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        this.style.transform = 'scale(1)';
-      }, 150);
       mostrarToast('Você tem 3 notificações não lidas.', 'success');
     });
 
     console.log('👑 KINGS — GESTÃO DE FUTEBOL');
     console.log('Pensar. Jogar. Vencer.');
-    console.log('Jogadores cadastrados:', jogadores.length);
+    console.log('🔥 Firebase conectado ao projeto: kings-futebol');
   </script>
 
 </body>
